@@ -1,0 +1,2 @@
+Nova is an AI-powered chatbot built with React and integrated with Google Gemini API. It provides smart, real-time responses, making conversations more natural and engaging. Designed with a clean UI, message timestamps, and auto-scrolling chat history, Nova acts as a helpful assistant that you can customize for learning, productivity, or fun.
+<img width="1918" height="1077" alt="Working" src="https://github.com/user-attachments/assets/62dc8001-2faf-44e6-a0f3-e462406444d0" />
