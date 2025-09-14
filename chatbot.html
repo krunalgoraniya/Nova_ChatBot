@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>ChatBot</title>
+    <link rel = "stylesheet" href = "style.css"/>
+
+  </head>
+    <body>
+    <div class="js-container"></div>
+    <script src="https://unpkg.com/supersimpledev/react.js"></script>
+    <script src="https://unpkg.com/supersimpledev/react-dom.js"></script>
+    <script src="https://unpkg.com/supersimpledev/chatbot.js"></script>
+    <script src="https://unpkg.com/supersimpledev/babel.js"></script>
+    <script type="text/babel">
+
+      function ChatInput({chatMessages, setChatMessages}){
+        const [inputText, updatedText] = React.useState('');
+        
+        function saveInputText(event){
+          updatedText(event.target.value);
+        }
+        
+        function sendMessage(){
+          const newChatMessages = [
+            ...chatMessages,
+            {
+              message: inputText,
+              sender: 'user',
+              id:crypto.randomUUID()
+            }
+          ];
+
+
+          setChatMessages(newChatMessages)
+
+            const response = Chatbot.getResponse(inputText);
+             setChatMessages([
+              ...newChatMessages,
+              {
+                message: response,
+                sender: 'robot',
+                id:crypto.randomUUID()
+              }
+            ]);
+            
+            updatedText(''); 
+        }
+
+        return(
+          <div className ="chat-input">
+            <input 
+              placeholder="Send a message to ChatBot" 
+              size = "30" 
+              onChange = {saveInputText} 
+              value = {inputText}  
+              className = "input-text"
+            />
+            <button
+             onClick = {sendMessage}
+             className = "send-button"
+            >Send</button>
+          </div>
+        );
+      }
+      function ChatMessage({message, sender}){
+        return(
+          <div className = {sender === 'user' ? 'user-message' : 'robot-message'}>
+            { sender === 'robot' && 
+              <img src = "https://img.freepik.com/premium-vector/robot-circle-flat-icon_418020-239.jpg" 
+              width = "50"/>}
+            <div className = "message-text">
+              {message}
+            </div>
+            {sender === 'user' && 
+              <img src = "https://static.vecteezy.com/system/resources/previews/037/336/395/non_2x/user-profile-flat-illustration-avatar-person-icon-gender-neutral-silhouette-profile-picture-free-vector.jpg" 
+              width = "50"/>}
+          </div>
+        );
+      }
+
+      function ChatMessages({chatMessages}) {
+    
+        return (
+          <div className="chat-messages-container">
+            {chatMessages.map((chatMessage) => {
+              return (
+                <ChatMessage 
+                  message={chatMessage.message}
+                  sender={chatMessage.sender}
+                  key={chatMessage.id}
+                />
+              );
+            })}
+          </div>
+        );
+      }
+
+        function App(){
+          const array = React.useState([
+          {
+            message: 'Hello! I am ChatBot. How can I help you?',
+            sender: 'robot',
+            id: '1'
+          }
+        ]);
+          const [chatMessages, setChatMessages] = array;
+        // const chatMessages = array[0];
+        // const setChatMessages = array[1];
+        return(
+           <div className="app-container">
+            <ChatMessages
+              chatMessages = {chatMessages}
+            />
+              <ChatInput
+              chatMessages = {chatMessages}
+              setChatMessages = {setChatMessages}
+            />
+          </div>
+        );
+      }
+
+      const container = document.querySelector('.js-container');
+      ReactDOM.createRoot(container).render(<App />);
+      
+     
+    </script>
+  </body>
+</html>
